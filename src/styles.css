@@ -57,6 +57,10 @@ html, body {
     padding: 2rem;
 }
 
+.main-header {
+    margin-bottom: 1rem;
+}
+
 .main-content {
     display: flex;
     flex-direction: column;
@@ -118,3 +122,50 @@ button {
     cursor: pointer;
     user-select: none;
 }
+
+.card {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px); /* adjust as needed */
+}
+
+.todo {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 16px;
+  color: #f1f1f1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.todo:hover {
+  transform: translateY(-4px);
+}
+
+.todo-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.todo-description {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+}
+
+.todo-footer {
+  font-size: 0.85rem;
+  color: #999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+

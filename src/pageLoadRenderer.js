@@ -1,3 +1,7 @@
+import { projects } from "./main";
+import { todoRender } from "./todoListRenderer";
+import { addTodoItem } from "./addTodo";
+
 export function pageLoadRender() {
     // add header
     const header = document.querySelector('header');
@@ -62,6 +66,7 @@ export function pageLoadRender() {
     mainContent.classList.add('main-content');
     main.appendChild(mainContent);
     const mainHeader = document.createElement('h1');
+    mainHeader.classList.add('main-header');
     mainHeader.textContent = 'Inbox';
     mainContent.appendChild(mainHeader);
     const mainCard = document.createElement('div');
@@ -69,7 +74,7 @@ export function pageLoadRender() {
     const newTodo = document.createElement('div');
     newTodo.textContent = 'Add Todo ⊕'
     newTodo.classList.add('add-todo');
-    mainCard.appendChild(newTodo);
+    mainContent.appendChild(newTodo);
     mainContent.appendChild(mainCard);
 
     section.append(sidebar, main);
@@ -156,20 +161,23 @@ export function pageLoadRender() {
     form.append(titleInput, descInput, dueDateInput, importanceLabel, finishedLabel, submitBtn);
 
     form.addEventListener('submit', (event) => {
-        event.preventDefault(); 
-        const todoData = {
-            title: form.title.value.trim(),
-            description: form.description.value.trim(),
-            dueDate: form.dueDate.value,          // string in YYYY-MM-DD or empty
-            importance: form.importance.checked,  // true/false
-            finished: form.finished.checked       // true/false
-        };
+        event.preventDefault(); // prevent page reload
+
+        const formData = new FormData(form);
+        const title = formData.get('title');
+        const description = formData.get('description');
+        const dueDate = formData.get('dueDate');
+        const importance = formData.get('importance') === 'on'; // checkbox
+        const finished = formData.get('finished') === 'on';     // checkbox
+
+        const todoData = { title, description, dueDate, importance, finished };
+       
+        addTodoItem(todoData.title, todoData.description, todoData.dueDate, todoData.importance, todoData.finished);
+        todoRender('inbox');
 
         form.reset();
         modalOverlay.style.display = 'none';
-
     });
-
 
     // Build modal
     modalBox.append(closeBtn, modalTitle, form);
