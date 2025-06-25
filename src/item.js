@@ -1,5 +1,6 @@
 export class TodoItem {
     constructor (title, description = '', dueDate = null, important = false, finished = false) {
+        this.id = crypto.randomUUID(); // ✅ Generate unique ID
         this.title = title;
         this.description = description;
         this.dueDate = dueDate ? new Date(dueDate) : null;

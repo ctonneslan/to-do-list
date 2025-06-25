@@ -1,5 +1,6 @@
 import { projects } from "./main";
 import { format, isValid } from "date-fns";
+import { openEditModal } from "./editModal";
 
 export function todoRender(tab) {
   const card = document.querySelector('.card');
@@ -29,10 +30,18 @@ export function todoRender(tab) {
     const status = document.createElement('div');
     status.textContent = todo.finished ? '✅ Done' : (todo.important ? '⭐ Important' : '');
 
+    const edit = document.createElement('div');
+    edit.textContent = 'Edit ✍️';
+    edit.classList.add('edit-todo');
+
+    edit.addEventListener('click', () => {
+        openEditModal(todo);
+    });
+
     footer.appendChild(due);
     footer.appendChild(status);
 
-    div.append(title, desc, footer);
+    div.append(title, desc, edit, footer);
     card.appendChild(div);
   });
 }

@@ -9,15 +9,15 @@ class Projects {
     getProjectTodos(tab) {
         const filtered = this.projects[this.current_project].filter(todo => {
             switch (tab) {
-                case 'inbox':
+                case '📨 Inbox':
                     return true
-                case 'today':
+                case '📆 Today':
                     return todo.dueDate && isToday(todo.dueDate);
-                case 'week':
+                case '🗓️ This Week':
                     return todo.dueDate && isThisWeek(todo.dueDate);
-                case 'important':
+                case '☆ Important':
                     return todo.important;
-                case 'finished':
+                case '✅ Finished':
                     return todo.finished;
                 default:
                     false;

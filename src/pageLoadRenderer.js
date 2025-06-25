@@ -67,7 +67,7 @@ export function pageLoadRender() {
     main.appendChild(mainContent);
     const mainHeader = document.createElement('h1');
     mainHeader.classList.add('main-header');
-    mainHeader.textContent = 'Inbox';
+    mainHeader.textContent = '📨 Inbox';
     mainContent.appendChild(mainHeader);
     const mainCard = document.createElement('div');
     mainCard.classList.add('card');
@@ -173,10 +173,10 @@ export function pageLoadRender() {
         const todoData = { title, description, dueDate, importance, finished };
        
         addTodoItem(todoData.title, todoData.description, todoData.dueDate, todoData.importance, todoData.finished);
-        todoRender('inbox');
-
         form.reset();
         modalOverlay.style.display = 'none';
+        todoRender(mainHeader.textContent);
+        console.log(projects)
     });
 
     // Build modal
@@ -198,4 +198,13 @@ export function pageLoadRender() {
             modalOverlay.style.display = 'none';
         }
     });
+
+    [inbox, today, week, important, finished].forEach(item => {
+        item.addEventListener('click', () => {
+            mainCard.innerHTML = '';
+            mainHeader.textContent = item.textContent.trim();
+            todoRender(mainHeader.textContent);
+            console.log(projects)
+        })
+    })
 }
