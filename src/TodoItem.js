@@ -9,6 +9,7 @@ export class TodoItem {
     this.id = crypto.randomUUID();
     this.title = title;
     this.description = description;
+    this.dueDate = dueDate;
     this.important = important;
     this.finished = finished;
   }

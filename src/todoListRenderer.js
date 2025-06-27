@@ -1,5 +1,6 @@
 import { CURRENT_PROJECT, PROJECTS } from "./main";
 import { removeTodo } from "./modifyTodos";
+import { buildEditModal } from "./editModal";
 
 export function todoRender(tab) {
   const card = document.querySelector(".card");
@@ -30,7 +31,7 @@ export function todoRender(tab) {
           todo.description || "No description"
         }</p>
         <p><strong>Due Date:</strong> ${todo.dueDate || "None"}</p>
-        <p><strong>Importance:</strong> ${todo.importance || "Normal"}</p>
+        <p><strong>Important:</strong> ${todo.important ? "Yes" : "No"}</p>
         <p><strong>Finished:</strong> ${todo.finished ? "Yes" : "No"}</p>
       </div>
     `;
@@ -53,12 +54,6 @@ export function todoRender(tab) {
       const id = todoItem.getAttribute("data-id");
       removeTodo(id);
       todoRender(); // re-render list
-      console.log("HERE");
-    });
-
-    // Edit button (stub for now)
-    todoItem.querySelector(".edit-btn").addEventListener("click", () => {
-      alert(`Edit "${todo.title}" (you can implement a modal editor here)`);
     });
 
     card.appendChild(todoItem);
