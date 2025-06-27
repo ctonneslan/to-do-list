@@ -1,210 +1,256 @@
 import { projects } from "./main";
 import { todoRender } from "./todoListRenderer";
 import { addTodoItem } from "./addTodo";
+import { initProjectModal, openProjectModal } from "./editProjects.js";
 
 export function pageLoadRender() {
-    // add header
-    const header = document.querySelector('header');
-    header.classList.add('header')
-    const title = document.createElement('h1');
-    title.textContent = '☑️ Todo List';
-    header.appendChild(title);
+  // add header
+  const header = document.querySelector("header");
+  header.classList.add("header");
+  const title = document.createElement("h1");
+  title.textContent = "☑️ Todo List";
+  header.appendChild(title);
 
-    // add main section (sidebar and main content)
-    const section = document.querySelector('section');
-    section.classList.add('section');
+  // add main section (sidebar and main content)
+  const section = document.querySelector("section");
+  section.classList.add("section");
 
-    // build sidebar
-    const sidebar = document.createElement('div');
-    sidebar.classList.add('sidebar');
-    const list = document.createElement('ul');
-    list.classList.add('list');
-    // inbox
-    const inbox = document.createElement('li');
-    const inboxContent = document.createElement('span');
-    inboxContent.textContent = '📨 Inbox'
-    inboxContent.classList.add('item-content');
-    inbox.appendChild(inboxContent);
-    // today
-    const today = document.createElement('li');
-    const todayContent = document.createElement('span');
-    todayContent.textContent = '📆 Today'
-    todayContent.classList.add('item-content');
-    today.appendChild(todayContent);
-    // week
-    const week = document.createElement('li');
-    const weekContent = document.createElement('span');
-    weekContent.textContent = '🗓️ This Week'
-    weekContent.classList.add('item-content');
-    week.appendChild(weekContent);
-    // important
-    const important = document.createElement('li');
-    const importantContent = document.createElement('span');
-    importantContent.textContent = '☆ Important'
-    importantContent.classList.add('item-content');
-    important.appendChild(importantContent);
-    // finished
-    const finished = document.createElement('li');
-    const finishedContent = document.createElement('span');
-    finishedContent.textContent = '✅ Finished'
-    finishedContent.classList.add('item-content');
-    finished.appendChild(finishedContent);
-    // new project
-    const newProject = document.createElement('li');
-    const newProjectContent = document.createElement('span');
-    newProjectContent.textContent = 'New Project 📝'
-    newProjectContent.classList.add('item-content');
-    newProject.appendChild(newProjectContent);
+  // build sidebar
+  const sidebar = document.createElement("div");
+  sidebar.classList.add("sidebar");
+  const list = document.createElement("ul");
+  list.classList.add("list");
+  // inbox
+  const inbox = document.createElement("li");
+  const inboxContent = document.createElement("span");
+  inboxContent.textContent = "📨 Inbox";
+  inboxContent.classList.add("item-content");
+  inbox.appendChild(inboxContent);
+  // today
+  const today = document.createElement("li");
+  const todayContent = document.createElement("span");
+  todayContent.textContent = "📆 Today";
+  todayContent.classList.add("item-content");
+  today.appendChild(todayContent);
+  // week
+  const week = document.createElement("li");
+  const weekContent = document.createElement("span");
+  weekContent.textContent = "🗓️ This Week";
+  weekContent.classList.add("item-content");
+  week.appendChild(weekContent);
+  // important
+  const important = document.createElement("li");
+  const importantContent = document.createElement("span");
+  importantContent.textContent = "☆ Important";
+  importantContent.classList.add("item-content");
+  important.appendChild(importantContent);
+  // finished
+  const finished = document.createElement("li");
+  const finishedContent = document.createElement("span");
+  finishedContent.textContent = "✅ Finished";
+  finishedContent.classList.add("item-content");
+  finished.appendChild(finishedContent);
+  // new project
+  const newProject = document.createElement("li");
+  const newProjectContent = document.createElement("span");
+  newProjectContent.textContent = "New Project 📝";
+  newProjectContent.classList.add("item-content");
+  newProject.appendChild(newProjectContent);
+  // project selector
+  const select = document.createElement("select");
+  select.id = "project-select";
+  const all = document.createElement("option");
+  all.value = "All";
+  all.textContent = "All";
+  select.appendChild(all);
 
-    list.append(inbox, today, week, important, finished, newProject);
-    sidebar.appendChild(list);
+  list.append(inbox, today, week, important, finished, newProject, select);
+  sidebar.appendChild(list);
 
-    // build main
-    const main = document.createElement('div');
-    main.classList.add('main');
-    const mainContent = document.createElement('div');
-    mainContent.classList.add('main-content');
-    main.appendChild(mainContent);
-    const mainHeader = document.createElement('h1');
-    mainHeader.classList.add('main-header');
-    mainHeader.textContent = '📨 Inbox';
-    mainContent.appendChild(mainHeader);
-    const mainCard = document.createElement('div');
-    mainCard.classList.add('card');
-    const newTodo = document.createElement('div');
-    newTodo.textContent = 'Add Todo ⊕'
-    newTodo.classList.add('add-todo');
-    mainContent.appendChild(newTodo);
-    mainContent.appendChild(mainCard);
+  // Initialize modal UI
+  initProjectModal();
 
-    section.append(sidebar, main);
+  // Open modal on clicking New Project
+  newProject.addEventListener("click", () => {
+    openProjectModal();
+  });
 
-    // create modal overlay
-    const modalOverlay = document.createElement('div');
-    modalOverlay.classList.add('modal-overlay');
-    modalOverlay.style.display = 'none';
+  // build main
+  const main = document.createElement("div");
+  main.classList.add("main");
+  const mainContent = document.createElement("div");
+  mainContent.classList.add("main-content");
+  main.appendChild(mainContent);
+  const mainHeader = document.createElement("h1");
+  mainHeader.classList.add("main-header");
+  mainHeader.textContent = "📨 Inbox";
+  mainContent.appendChild(mainHeader);
+  const mainCard = document.createElement("div");
+  mainCard.classList.add("card");
+  const newTodo = document.createElement("div");
+  newTodo.textContent = "Add Todo ⊕";
+  newTodo.classList.add("add-todo");
+  mainContent.appendChild(newTodo);
+  mainContent.appendChild(mainCard);
 
-    // create modal box
-    const modalBox = document.createElement('div');
-    modalBox.classList.add('modal');
+  section.append(sidebar, main);
 
-    // close button
-    const closeBtn = document.createElement('span');
-    closeBtn.classList.add('modal-close');
-    closeBtn.textContent = 'x';
+  // create modal overlay
+  const modalOverlay = document.createElement("div");
+  modalOverlay.classList.add("modal-overlay");
+  modalOverlay.style.display = "none";
 
-    // modal title
-    const modalTitle = document.createElement('h2');
-    modalTitle.textContent = 'Add a new todo';
+  // create modal box
+  const modalBox = document.createElement("div");
+  modalBox.classList.add("modal");
 
-    // input form inside modal
-    const form = document.createElement('form');
-    form.id = 'todoForm';
+  // close button
+  const closeBtn = document.createElement("span");
+  closeBtn.classList.add("modal-close");
+  closeBtn.textContent = "x";
 
-    // title input
-    const titleInput = document.createElement('input');
-    titleInput.type = 'text';
-    titleInput.placeholder = 'Title';
-    titleInput.name = 'title';
-    titleInput.required = true;
-    titleInput.style.width = '100%';
-    titleInput.style.padding = '8px';
-    titleInput.style.marginTop = '10px';
+  // modal title
+  const modalTitle = document.createElement("h2");
+  modalTitle.textContent = "Add a new todo";
 
-    // description textarea
-    const descInput = document.createElement('textarea');
-    descInput.placeholder = 'Description';
-    descInput.name = 'description';
-    descInput.rows = 4;
-    descInput.style.width = '100%';
-    descInput.style.padding = '8px';
-    descInput.style.marginTop = '10px'
+  // input form inside modal
+  const form = document.createElement("form");
+  form.id = "todoForm";
 
-    // due date input
-    const dueDateInput = document.createElement('input');
-    dueDateInput.type = 'date';
-    dueDateInput.name = 'dueDate';
-    dueDateInput.style.marginTop = '10px';
-    dueDateInput.style.padding = '8px';
-    dueDateInput.style.width = '100%';
+  // title input
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.placeholder = "Title";
+  titleInput.name = "title";
+  titleInput.required = true;
+  titleInput.style.width = "100%";
+  titleInput.style.padding = "8px";
+  titleInput.style.marginTop = "10px";
 
-    // important checkbox
-    const importanceLabel = document.createElement('label');
-    importanceLabel.style.display = 'block';
-    importanceLabel.style.marginTop = '10px';
-    const importanceInput = document.createElement('input');
-    importanceInput.type = 'checkbox';
-    importanceInput.name = 'importance';
-    importanceInput.style.marginRight = '6px';
-    importanceLabel.appendChild(importanceInput);
-    importanceLabel.appendChild(document.createTextNode('Important'));
+  // description textarea
+  const descInput = document.createElement("textarea");
+  descInput.placeholder = "Description";
+  descInput.name = "description";
+  descInput.rows = 4;
+  descInput.style.width = "100%";
+  descInput.style.padding = "8px";
+  descInput.style.marginTop = "10px";
 
-    // finished checkbox
-    const finishedLabel = document.createElement('label');
-    finishedLabel.style.display = 'block';
-    finishedLabel.style.marginTop = '6px';
-    const finishedInput = document.createElement('input');
-    finishedInput.type = 'checkbox';
-    finishedInput.name = 'finished';
-    finishedInput.style.marginRight = '6px';
-    finishedLabel.appendChild(finishedInput);
-    finishedLabel.appendChild(document.createTextNode('Finished'));
+  // due date input
+  const dueDateInput = document.createElement("input");
+  dueDateInput.type = "date";
+  dueDateInput.name = "dueDate";
+  dueDateInput.style.marginTop = "10px";
+  dueDateInput.style.padding = "8px";
+  dueDateInput.style.width = "100%";
 
-    // submit button
-    const submitBtn = document.createElement('button');
-    submitBtn.type = 'submit';
-    submitBtn.textContent = 'Add todo';
-    submitBtn.style.marginTop = '12px';
-    submitBtn.style.padding = '10px 18px';
+  // important checkbox
+  const importanceLabel = document.createElement("label");
+  importanceLabel.style.display = "block";
+  importanceLabel.style.marginTop = "10px";
+  const importanceInput = document.createElement("input");
+  importanceInput.type = "checkbox";
+  importanceInput.name = "importance";
+  importanceInput.style.marginRight = "6px";
+  importanceLabel.appendChild(importanceInput);
+  importanceLabel.appendChild(document.createTextNode("Important"));
 
-    // Build form first
-    form.append(titleInput, descInput, dueDateInput, importanceLabel, finishedLabel, submitBtn);
+  // finished checkbox
+  const finishedLabel = document.createElement("label");
+  finishedLabel.style.display = "block";
+  finishedLabel.style.marginTop = "6px";
+  const finishedInput = document.createElement("input");
+  finishedInput.type = "checkbox";
+  finishedInput.name = "finished";
+  finishedInput.style.marginRight = "6px";
+  finishedLabel.appendChild(finishedInput);
+  finishedLabel.appendChild(document.createTextNode("Finished"));
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // prevent page reload
+  // submit button
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.textContent = "Add todo";
+  submitBtn.style.marginTop = "12px";
+  submitBtn.style.padding = "10px 18px";
 
-        const formData = new FormData(form);
-        const title = formData.get('title');
-        const description = formData.get('description');
-        const dueDate = formData.get('dueDate');
-        const importance = formData.get('importance') === 'on'; // checkbox
-        const finished = formData.get('finished') === 'on';     // checkbox
+  // Build form first
+  form.append(
+    titleInput,
+    descInput,
+    dueDateInput,
+    importanceLabel,
+    finishedLabel,
+    submitBtn
+  );
 
-        const todoData = { title, description, dueDate, importance, finished };
-       
-        addTodoItem(todoData.title, todoData.description, todoData.dueDate, todoData.importance, todoData.finished);
-        form.reset();
-        modalOverlay.style.display = 'none';
-        todoRender(mainHeader.textContent);
-        console.log(projects)
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // prevent page reload
+
+    const formData = new FormData(form);
+    const title = formData.get("title");
+    const description = formData.get("description");
+    const dueDate = formData.get("dueDate");
+    const importance = formData.get("importance") === "on"; // checkbox
+    const finished = formData.get("finished") === "on"; // checkbox
+
+    const todoData = { title, description, dueDate, importance, finished };
+
+    addTodoItem(
+      todoData.title,
+      todoData.description,
+      todoData.dueDate,
+      todoData.importance,
+      todoData.finished
+    );
+    form.reset();
+    modalOverlay.style.display = "none";
+    todoRender(mainHeader.textContent);
+    console.log(projects);
+  });
+
+  // Build modal
+  modalBox.append(closeBtn, modalTitle, form);
+  modalOverlay.appendChild(modalBox);
+  document.body.appendChild(modalOverlay);
+
+  newTodo.addEventListener("click", () => {
+    modalOverlay.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modalOverlay.style.display = "none";
+  });
+
+  // Close modal if clicking outside the modal box
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.style.display = "none";
+    }
+  });
+
+  [inbox, today, week, important, finished].forEach((item) => {
+    item.addEventListener("click", () => {
+      mainCard.innerHTML = "";
+      mainHeader.textContent = item.textContent.trim();
+      todoRender(mainHeader.textContent);
+      console.log(projects);
     });
+  });
 
-    // Build modal
-    modalBox.append(closeBtn, modalTitle, form);
-    modalOverlay.appendChild(modalBox);
-    document.body.appendChild(modalOverlay);
+  select.addEventListener("change", (e) => {
+    const selectedProject = e.target.value;
 
-    newTodo.addEventListener('click', () => {
-        modalOverlay.style.display = 'flex';
-    });
+    if (selectedProject === "All") {
+      console.log("here");
+      projects.setCurrentProject("All"); // or however you want to map 'All' tab
+      mainHeader.textContent = "📨 Inbox";
+    } else {
+      console.log("here");
+      projects.setCurrentProject(selectedProject);
+      mainHeader.textContent = selectedProject;
+    }
 
-    closeBtn.addEventListener('click', () => {
-        modalOverlay.style.display = 'none';
-    });
-
-    // Close modal if clicking outside the modal box
-    modalOverlay.addEventListener('click', e => {
-        if (e.target === modalOverlay) {
-            modalOverlay.style.display = 'none';
-        }
-    });
-
-    [inbox, today, week, important, finished].forEach(item => {
-        item.addEventListener('click', () => {
-            mainCard.innerHTML = '';
-            mainHeader.textContent = item.textContent.trim();
-            todoRender(mainHeader.textContent);
-            console.log(projects)
-        })
-    })
+    mainCard.innerHTML = ""; // Clear current todo list container
+    todoRender(mainHeader.textContent); // Render todos for selected project/tab
+  });
 }
