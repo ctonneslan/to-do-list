@@ -1,6 +1,9 @@
-import { pageLoadRender } from './pageLoadRenderer'
-import './styles.css'
+import { pageLoadRender } from "./pageLoadRenderer";
+import "./styles.css";
 
-document.addEventListener('DOMContentLoaded', () => {
-    pageLoadRender();
+export const PROJECTS = { default: {} };
+export const CURRENT_PROJECT = "default";
+
+document.addEventListener("DOMContentLoaded", () => {
+  pageLoadRender();
 });
