@@ -51,6 +51,23 @@ html, body {
     margin-top: 1.5rem;
 }
 
+.project-selector {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: 1rem;
+}
+
+#project-select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: white;
+}
+
 .main {
   background-color: rgb(35, 36, 37);
   width: 100%;

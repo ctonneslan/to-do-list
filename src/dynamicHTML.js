@@ -58,7 +58,13 @@ export function buildPage() {
   newProjectContent.classList.add("item-content");
   newProject.appendChild(newProjectContent);
 
-  list.append(inbox, today, week, important, finished, newProject);
+  // current project / selector
+  const selector = document.createElement("div");
+  selector.classList.add("project-selector");
+  selector.innerHTML = `<label for="project-select">Current Project:</label>
+                        <select id="project-select"></select>`;
+
+  list.append(inbox, today, week, important, finished, newProject, selector);
   sidebar.appendChild(list);
 
   // build main
