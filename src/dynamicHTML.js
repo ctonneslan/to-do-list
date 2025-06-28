@@ -59,6 +59,7 @@ export function buildPage() {
   const newProjectContent = document.createElement("span");
   newProjectContent.textContent = "New Project 📝";
   newProjectContent.classList.add("item-content");
+  newProject.classList.add("new-project");
   newProject.appendChild(newProjectContent);
 
   // current project / selector
