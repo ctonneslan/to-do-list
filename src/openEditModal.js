@@ -1,4 +1,5 @@
 import { CURRENT_PROJECT, PROJECTS } from "./main.js";
+import { todoRender } from "./todoListRenderer.js";
 
 export function openEditModal(modalElements, todoId, onSaveCallback) {
   const { overlay, form, inputs } = modalElements;
@@ -28,6 +29,7 @@ export function openEditModal(modalElements, todoId, onSaveCallback) {
     if (typeof onSaveCallback === "function") {
       onSaveCallback();
     }
+    todoRender(document.querySelector(".main-header").textContent);
   };
 
   overlay.style.display = "flex";
