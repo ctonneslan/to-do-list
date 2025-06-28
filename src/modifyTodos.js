@@ -7,9 +7,9 @@ export function addTodo(title, description, date, important, finished) {
   const todo = new TodoItem(title, description, date, important, finished);
   PROJECTS[CURRENT_PROJECT][todo.id] = todo;
   todoRender();
-  buildEditModal(todo.id);
 }
 
 export function removeTodo(id) {
   delete PROJECTS[CURRENT_PROJECT][id];
+  todoRender();
 }

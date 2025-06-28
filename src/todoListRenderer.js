@@ -1,8 +1,15 @@
-import { CURRENT_PROJECT, PROJECTS } from "./main";
-import { removeTodo } from "./modifyTodos";
-import { buildEditModal } from "./editModal";
+import { CURRENT_PROJECT, PROJECTS } from "./main.js";
+import { removeTodo } from "./modifyTodos.js";
+import { openEditModal } from "./openEditModal.js"; // path as appropriate
 
-export function todoRender(tab) {
+// Import or get reference to the modal elements (assumes it was created once)
+let modalElements;
+
+export function setEditModalElements(elements) {
+  modalElements = elements;
+}
+
+export function todoRender() {
   const card = document.querySelector(".card");
   card.innerHTML = "";
 
@@ -14,7 +21,6 @@ export function todoRender(tab) {
   for (const id in todos) {
     const todo = todos[id];
 
-    // Main row
     const todoItem = document.createElement("div");
     todoItem.classList.add("todo-item");
     todoItem.setAttribute("data-id", id);
@@ -26,7 +32,7 @@ export function todoRender(tab) {
         <button class="edit-btn">✎</button>
         <button class="delete-btn">✕</button>
       </div>
-      <div class="todo-details">
+      <div class="todo-details" style="display:none;">
         <p><strong>Description:</strong> ${
           todo.description || "No description"
         }</p>
@@ -36,14 +42,11 @@ export function todoRender(tab) {
       </div>
     `;
 
-    // Toggle expand/collapse
+    // Toggle expand/collapse on row click but not buttons
     const gridRow = todoItem.querySelector(".todo-grid-row");
     const details = todoItem.querySelector(".todo-details");
 
-    details.style.display = "none";
-
     gridRow.addEventListener("click", (e) => {
-      // Prevent button clicks from toggling the details
       if (e.target.tagName.toLowerCase() === "button") return;
       details.style.display =
         details.style.display === "none" ? "block" : "none";
@@ -51,9 +54,13 @@ export function todoRender(tab) {
 
     // Delete button
     todoItem.querySelector(".delete-btn").addEventListener("click", () => {
-      const id = todoItem.getAttribute("data-id");
       removeTodo(id);
-      todoRender(); // re-render list
+      todoRender();
+    });
+
+    // Edit button — use our shared modal
+    todoItem.querySelector(".edit-btn").addEventListener("click", () => {
+      openEditModal(modalElements, id, todoRender);
     });
 
     card.appendChild(todoItem);

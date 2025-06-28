@@ -2,89 +2,70 @@ import { CURRENT_PROJECT, PROJECTS } from "./main";
 import { removeTodo } from "./modifyTodos";
 import { buildTodoModal } from "./todoModal";
 
-export function buildEditModal(id) {
-  const todo = PROJECTS[CURRENT_PROJECT][id];
-  // create modal overlay
+// editModal.js
+export function buildEditModal() {
   const editOverlay = document.createElement("div");
+  editOverlay.id = "edit-modal-overlay";
   editOverlay.classList.add("modal-overlay");
   editOverlay.style.display = "none";
 
-  // create modal box
   const editBox = document.createElement("div");
   editBox.classList.add("modal");
 
-  // close button
-  const editCloseBtn = document.createElement("span");
-  editCloseBtn.classList.add("modal-close");
-  editCloseBtn.textContent = "x";
+  const closeBtn = document.createElement("span");
+  closeBtn.classList.add("modal-close");
+  closeBtn.textContent = "×";
 
-  // modal title
-  const editTitle = document.createElement("h2");
-  editTitle.textContent = "Edit todo";
+  const title = document.createElement("h2");
+  title.textContent = "Edit Todo";
 
-  // input form inside modal
   const form = document.createElement("form");
   form.id = "editForm";
 
-  // title input
   const titleInput = document.createElement("input");
-  titleInput.type = "text";
-  titleInput.value = `${todo.title}`;
   titleInput.name = "title";
   titleInput.required = true;
+  titleInput.placeholder = "Title";
   titleInput.style.width = "100%";
-  titleInput.style.padding = "8px";
   titleInput.style.marginTop = "10px";
 
-  // description textarea
   const descInput = document.createElement("textarea");
-  descInput.value = `${todo.description}`;
   descInput.name = "description";
+  descInput.placeholder = "Description";
   descInput.rows = 4;
   descInput.style.width = "100%";
-  descInput.style.padding = "8px";
   descInput.style.marginTop = "10px";
 
-  // due date input
   const dueDateInput = document.createElement("input");
-  dueDateInput.type = "date";
   dueDateInput.name = "dueDate";
+  dueDateInput.type = "date";
   dueDateInput.style.marginTop = "10px";
-  dueDateInput.style.padding = "8px";
   dueDateInput.style.width = "100%";
 
-  // important checkbox
   const importanceLabel = document.createElement("label");
   importanceLabel.style.display = "block";
   importanceLabel.style.marginTop = "10px";
   const importanceInput = document.createElement("input");
   importanceInput.type = "checkbox";
-  importanceInput.checked = todo.important;
   importanceInput.name = "importance";
   importanceInput.style.marginRight = "6px";
-  importanceLabel.appendChild(importanceInput);
-  importanceLabel.appendChild(document.createTextNode("Important"));
+  importanceLabel.append(importanceInput, "Important");
 
-  // finished checkbox
   const finishedLabel = document.createElement("label");
   finishedLabel.style.display = "block";
   finishedLabel.style.marginTop = "6px";
   const finishedInput = document.createElement("input");
   finishedInput.type = "checkbox";
-  finishedInput.checked = todo.finished;
   finishedInput.name = "finished";
   finishedInput.style.marginRight = "6px";
-  finishedLabel.appendChild(finishedInput);
-  finishedLabel.appendChild(document.createTextNode("Finished"));
+  finishedLabel.append(finishedInput, "Finished");
 
-  // submit button
   const submitBtn = document.createElement("button");
   submitBtn.type = "submit";
-  submitBtn.textContent = "Make changes";
+  submitBtn.textContent = "Save Changes";
   submitBtn.style.marginTop = "12px";
   submitBtn.style.padding = "10px 18px";
 
-  // Build form first
   form.append(
     titleInput,
     descInput,
@@ -94,44 +75,30 @@ export function buildEditModal(id) {
     submitBtn
   );
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const todoData = {
-      title: form.title.value.trim(),
-      description: form.description.value.trim(),
-      dueDate: form.dueDate.value, // string in YYYY-MM-DD or empty
-      importance: form.importance.checked, // true/false
-      finished: form.finished.checked, // true/false
-    };
-    const todo = PROJECTS[CURRENT_PROJECT][id];
-    todo.title = todoData.title;
-    todo.description = todoData.description;
-    todo.dueDate = todoData.dueDate;
-    todo.importance = todoData.importance;
-    todo.finished = todoData.finished;
-    form.reset();
-    editOverlay.style.display = "none";
-  });
-
-  // Build modal
-  editBox.append(editCloseBtn, editTitle, form);
+  editBox.append(closeBtn, title, form);
   editOverlay.appendChild(editBox);
   document.body.appendChild(editOverlay);
 
-  const editTodo = document.querySelector(".edit-btn");
-  editTodo.addEventListener("click", () => {
-    console.log("here");
-    editOverlay.style.display = "flex";
-  });
-
-  editCloseBtn.addEventListener("click", () => {
+  closeBtn.addEventListener("click", () => {
     editOverlay.style.display = "none";
   });
 
-  // Close modal if clicking outside the modal box
   editOverlay.addEventListener("click", (e) => {
     if (e.target === editOverlay) {
       editOverlay.style.display = "none";
     }
   });
+
+  // Return the modal elements for external use
+  return {
+    overlay: editOverlay,
+    form,
+    inputs: {
+      title: titleInput,
+      description: descInput,
+      dueDate: dueDateInput,
+      importance: importanceInput,
+      finished: finishedInput,
+    },
+  };
 }
