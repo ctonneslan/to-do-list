@@ -56,7 +56,7 @@ export function todoRender(filter) {
     // Delete button
     todoItem.querySelector(".delete-btn").addEventListener("click", () => {
       removeTodo(id);
-      todoRender();
+      todoRender(document.querySelector(".main-header").textContent);
     });
 
     // Edit button — use our shared modal

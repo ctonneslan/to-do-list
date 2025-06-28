@@ -1,4 +1,4 @@
-import { PROJECTS, setCurrentProject } from "./main";
+import { PROJECTS, setCurrentProject, saveProjectsToStorage } from "./main";
 import { todoRender } from "./todoListRenderer";
 
 export function setupProjectSelector() {
@@ -20,7 +20,7 @@ export function setupProjectSelector() {
   // When a project is selected
   select.addEventListener("change", (e) => {
     setCurrentProject(e.target.value);
-    todoRender();
+    todoRender(document.querySelector(".main-header").textContent);
   });
 
   // Handle new project click
@@ -31,10 +31,12 @@ export function setupProjectSelector() {
       if (!name || PROJECTS[name]) return;
 
       PROJECTS[name] = {};
+      saveProjectsToStorage(); // ✅ Save to localStorage here
+
       updateProjectOptions();
       select.value = name;
       setCurrentProject(name);
-      todoRender();
+      todoRender(document.querySelector(".main-header").textContent);
     });
   }
 }

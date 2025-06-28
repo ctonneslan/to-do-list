@@ -3,6 +3,7 @@ import { buildEditModal } from "./editModal";
 import { setupProjectSelector } from "./projectSelector";
 import { setEditModalElements } from "./todoListRenderer";
 import { buildTodoModal } from "./todoModal";
+import { todoRender } from "./todoListRenderer";
 
 export function pageLoadRender() {
   buildPage(); // build HTML structure
@@ -10,4 +11,5 @@ export function pageLoadRender() {
   const editModalElements = buildEditModal();
   setEditModalElements(editModalElements);
   setupProjectSelector(); // set up project selector dropdown
+  todoRender(document.querySelector(".main-header").textContent);
 }
