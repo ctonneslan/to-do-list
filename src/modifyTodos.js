@@ -6,10 +6,12 @@ import { todoRender } from "./todoListRenderer.js";
 export function addTodo(title, description, date, important, finished) {
   const todo = new TodoItem(title, description, date, important, finished);
   PROJECTS[CURRENT_PROJECT][todo.id] = todo;
-  todoRender();
+  const mainHeader = document.querySelector(".main-header");
+  todoRender(mainHeader.textContent);
 }
 
 export function removeTodo(id) {
   delete PROJECTS[CURRENT_PROJECT][id];
-  todoRender();
+  const mainHeader = document.querySelector(".main-header");
+  todoRender(mainHeader.textContent);
 }

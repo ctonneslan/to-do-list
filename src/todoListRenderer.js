@@ -1,3 +1,4 @@
+import { filterTodos } from "./filterTodos.js";
 import { CURRENT_PROJECT, PROJECTS } from "./main.js";
 import { removeTodo } from "./modifyTodos.js";
 import { openEditModal } from "./openEditModal.js"; // path as appropriate
@@ -9,11 +10,11 @@ export function setEditModalElements(elements) {
   modalElements = elements;
 }
 
-export function todoRender() {
+export function todoRender(filter) {
   const card = document.querySelector(".card");
   card.innerHTML = "";
 
-  const todos = PROJECTS[CURRENT_PROJECT];
+  const todos = filterTodos(filter);
   if (!todos) return;
 
   let index = 1;

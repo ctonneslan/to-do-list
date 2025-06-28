@@ -1,3 +1,6 @@
+import { filterTodos } from "./filterTodos";
+import { todoRender } from "./todoListRenderer";
+
 export function buildPage() {
   // add header
   const header = document.querySelector("header");
@@ -75,6 +78,7 @@ export function buildPage() {
   main.appendChild(mainContent);
   const mainHeader = document.createElement("h1");
   mainHeader.textContent = "Inbox";
+  mainHeader.classList.add("main-header");
   mainContent.appendChild(mainHeader);
   const mainCard = document.createElement("div");
   mainCard.classList.add("card");
@@ -85,4 +89,29 @@ export function buildPage() {
   mainContent.appendChild(mainCard);
 
   section.append(sidebar, main);
+
+  inbox.addEventListener("click", () => {
+    mainHeader.textContent = "Inbox";
+    todoRender("Inbox");
+  });
+
+  today.addEventListener("click", () => {
+    mainHeader.textContent = "Today";
+    todoRender("Today");
+  });
+
+  week.addEventListener("click", () => {
+    mainHeader.textContent = "This Week";
+    todoRender("This Week");
+  });
+
+  important.addEventListener("click", () => {
+    mainHeader.textContent = "Important";
+    todoRender("Important");
+  });
+
+  finished.addEventListener("click", () => {
+    mainHeader.textContent = "Finished";
+    todoRender("Finished");
+  });
 }
